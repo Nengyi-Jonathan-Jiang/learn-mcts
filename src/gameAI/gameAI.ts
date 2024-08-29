@@ -2,11 +2,11 @@ import { getRandomValues } from "crypto";
 
 export interface State<Move_t> {
     readonly validMoves: Move_t[];
-    readonly isGameFinished: boolean;
-
+    readonly winner: number | null;
     readonly currentPlayer: number;
 
-    applyMove(move: Move_t): this;
+    on(move: Move_t): this;
+    isMoveValid(move: Move_t): boolean;
 }
 
 export interface MoveValueMap<Move_t> {
