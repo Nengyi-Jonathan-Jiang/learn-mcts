@@ -9,6 +9,7 @@ export function maximize<T>(elements: Iterable<T>, valueFunction: (element: T) =
         const value = valueFunction(element);
         if (value > maxValue) {
             max = [element];
+            maxValue = value;
         }
         else if (value == maxValue) {
             max.push(element);

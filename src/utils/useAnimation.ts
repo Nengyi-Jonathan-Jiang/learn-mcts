@@ -18,24 +18,26 @@ function startAnimatingIfNotAnimating() {
     })
 }
 
+export function doAnimation(callback: (currTime: number, deltaTime: number) => any) : () => void {
+    let lastFrameTime: number | undefined = undefined;
+
+    const f = (time: DOMHighResTimeStamp) => {
+        const currTime = time / 1000;
+        lastFrameTime ??= currTime;
+        const deltaTime = currTime - lastFrameTime;
+        lastFrameTime = currTime;
+
+        callback.call(null, currTime, deltaTime);
+    }
+
+    animations.add(f);
+    startAnimatingIfNotAnimating();
+
+    return () => {
+        animations.delete(f)
+    };
+}
+
 export function useAnimation(callback: (currTime: number, deltaTime: number) => any) {
-    useEffect(() => {
-        let lastFrameTime: number | undefined = undefined;
-
-        const f = (time: DOMHighResTimeStamp) => {
-            const currTime = time / 1000;
-            lastFrameTime ??= currTime;
-            const deltaTime = currTime - lastFrameTime;
-            lastFrameTime = currTime;
-
-            callback.call(null, currTime, deltaTime);
-        }
-
-        animations.add(f);
-        startAnimatingIfNotAnimating();
-
-        return () => {
-            animations.delete(f)
-        };
-    }, []);
+    useEffect(() => doAnimation(callback), []);
 }

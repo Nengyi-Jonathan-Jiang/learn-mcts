@@ -17,8 +17,10 @@ export interface Policy<Move_t, State_t extends State<Move_t>> {
     getPolicy(state: State_t, player: number): MoveValueMap<Move_t>;
 }
 
+export type ValueMap = Map<number, number>;
+
 export interface StateHeuristic<Move_t, State_t extends State<Move_t>> {
-    getStateValue(state: State_t, player: number) : number;
+    getStateValue(state: State_t) : ValueMap;
 }
 
 export class UniformPolicy<Move_t, State_t extends State<Move_t>> implements Policy<Move_t, State_t> {

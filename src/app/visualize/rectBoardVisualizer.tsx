@@ -14,7 +14,7 @@ export function RectBoardVisualizer(
         board: RectBoard,
         onClickCell?: (x: number, y: number) => void,
         containerClassName?: string,
-        GamePiece?: ({player}: { player: number | null }) => ReactNode
+        GamePiece?: ({player, x, y}: { player: number | null, x: number, y: number }) => ReactNode
     }
 ): ReactNode {
     return <div className={`rect-board ${containerClassName ?? ''}`.trim()}>
@@ -31,7 +31,7 @@ export function RectBoardVisualizer(
                          key={x}
                          onClick={() => onClickCell(x, y)}
                     >
-                        <GamePiece player={board.getPieceAt(x, y)}/>
+                        <GamePiece player={board.getPieceAt(x, y)} x={x} y={y}/>
                     </div>
                 )}
             </div>
