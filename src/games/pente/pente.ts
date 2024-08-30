@@ -2,7 +2,7 @@ import {State} from "@/gameAI/gameAI";
 import {NInARowBoard, RectBoardMove} from "@/games/nInARowBoard";
 import {RectBoard} from "@/games/rectBoard";
 
-const BOARD_SIZE = 19;
+const BOARD_SIZE = 13;
 
 export class PenteState extends NInARowBoard {
     public readonly currentPlayer: number;

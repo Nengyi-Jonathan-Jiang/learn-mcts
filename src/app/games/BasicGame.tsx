@@ -29,7 +29,7 @@ export function BasicGamePage<T extends RectBoard = RectBoard>({ createState, To
     };
 
     return <main>
-        <div id="main-board">
+        <div id="main-board" onContextMenu={e => e.preventDefault()}>
             {Top ? <div id="top"><Top state={gameState}/></div> : null}
             <RectBoardVisualizer board={gameState} onClickCell={onClickCell} GamePiece={GamePiece} />
             {Bottom ? <div id="bottom"><Bottom state={gameState}/></div> : null}

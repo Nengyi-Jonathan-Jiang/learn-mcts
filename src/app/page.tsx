@@ -14,9 +14,10 @@ import { useManualRerender } from "@/utils/hooks";
 import { GomokuState } from "@/games/gomoku/gomoku";
 import { ValueMap } from "@/gameAI/gameAI";
 import { useAnimation } from "@/utils/useAnimation";
+import { PenteState } from "@/games/pente/pente";
 
 function createState() {
-    return new GomokuState()
+    return new PenteState()
 }
 
 export default function Home() {
@@ -49,7 +50,7 @@ export default function Home() {
             ["OX", 1], ["XO", 1]
         ]);
 
-        return new MCTSPolicy<RectBoardMove, NInARowBoard>(1000, {
+        return new MCTSPolicy<RectBoardMove, NInARowBoard>(0, {
             getStateValue(state: NInARowBoard): ValueMap {
                 const res: ValueMap = new Map;
                 for(const player of [0, 1]) {
@@ -74,7 +75,11 @@ export default function Home() {
     });
 
 
-    useAnimation(() => MCTS.tree && MCTS.doStep());
+    useAnimation(() => {
+        if(MCTS.tree){
+            MCTS.doStep();
+        }
+    });
 
     const winner = gameState.winner;
 
@@ -95,12 +100,22 @@ export default function Home() {
 
     const GamePieceWithAnalysis = useMemo(() => {
         return function GamePieceWithAnalysis({player, x, y}: { player: number | null, x: number, y : number }): ReactNode {
+            const ref = useRef<HTMLDivElement>(null);
             
+            useAnimation(() => {
+                if(player === null && ref.current) {
+                    const moveValue = policy.getMoveValue([x, y]);
+                    const display = isNaN(moveValue) ? '' : moveValue.toFixed(2); 
+                    ref.current.innerText = display;
+                    alert('A' + display)
+                }
+            });
+
             const moveValue = policy.getMoveValue([x, y]);
             const display = isNaN(moveValue) ? null : moveValue.toFixed(2); 
 
             return player === null ? 
-                <div className='board-game-piece empty' data-player={''}>{display}</div> : 
+                <div className='board-game-piece empty' data-player={''} ref={ref}>{display}</div> : 
                 <div className='board-game-piece' data-player={player}></div>
         }
     }, [])
