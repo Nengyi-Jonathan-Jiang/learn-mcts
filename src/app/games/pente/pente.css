@@ -1,0 +1,13 @@
+#top {
+    display: flex;
+}
+
+#top .board-game-piece {
+    width: 5vh;
+    height: 5vh;
+    position: relative !important;
+}
+
+#divider {
+    flex-grow: 1;
+}

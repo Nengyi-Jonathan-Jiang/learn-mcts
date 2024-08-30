@@ -22,7 +22,7 @@ export abstract class RectBoard implements State<RectBoardMove> {
     }
 
     public getPieceAt(x: number, y: number) {
-        return this.board[x][y];
+        return this.board[x]?.[y] ?? null;
     }
 
     public hasPieceAt(x: number, y: number): boolean {
@@ -30,6 +30,10 @@ export abstract class RectBoard implements State<RectBoardMove> {
     }
 
     public playPieceAt(x: number, y: number, player: number): void {
+        this.setPieceAt(x, y, player);
+    }
+
+    protected setPieceAt(x: number, y: number, player: number | null): void {
         this.board[x][y] = player;
     }
 
